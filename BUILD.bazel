@@ -1,0 +1,76 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(
+    [
+        "go.mod",
+        "go.sum",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "graceproc",
+    srcs = [
+        "graceproc.go",
+        "graceproc_darwin.go",
+        "graceproc_linux.go",
+        "graceproc_unix.go",
+        "graceproc_windows.go",
+    ],
+    importpath = "github.com/latticebuild/graceproc",
+    target_compatible_with = [],
+    deps = select({
+        "@io_bazel_rules_go//go/platform:darwin": ["@org_golang_x_sys//unix"],
+        "@io_bazel_rules_go//go/platform:windows": ["@org_golang_x_sys//windows"],
+        "//conditions:default": [],
+    }),
+)
+
+go_test(
+    name = "unit_test",
+    srcs = glob(["*_test.go"]),
+    embed = [":graceproc"],
+    pure = "on",
+    race = "off",
+    target_compatible_with = [],
+    deps = select({
+        "@io_bazel_rules_go//go/platform:darwin": ["@org_golang_x_sys//unix"],
+        "@io_bazel_rules_go//go/platform:windows": ["@org_golang_x_sys//windows"],
+        "//conditions:default": [],
+    }),
+)
+
+go_test(
+    name = "unit_race_test",
+    srcs = glob(["*_test.go"]),
+    embed = [":graceproc"],
+    pure = "off",
+    race = "on",
+    target_compatible_with = select({
+        "@platforms//os:windows": ["@platforms//:incompatible"],
+        "//conditions:default": [],
+    }),
+    deps = select({
+        "@io_bazel_rules_go//go/platform:darwin": ["@org_golang_x_sys//unix"],
+        "@io_bazel_rules_go//go/platform:windows": ["@org_golang_x_sys//windows"],
+        "//conditions:default": [],
+    }),
+)
+
+test_suite(
+    name = "test",
+    tests = [":unit_test"],
+)
+
+test_suite(
+    name = "race_test",
+    tests = [":unit_race_test"],
+)
+
+filegroup(
+    name = "artifacts",
+    testonly = True,
+    srcs = [":graceproc"],
+)

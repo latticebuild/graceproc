@@ -1,0 +1,15 @@
+amends "package://github.com/jdx/hk/releases/download/v2.0.0/hk@2.0.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.0.0/hk@2.0.0#/Builtins.pkl"
+import "pkl/hk/gofmt.pkl"
+min_hk_version = "2.0.0"
+hide_warnings = List("missing-profiles")
+steps {
+  ["bom"] = Builtins.byte_order_marker
+  ["merge-conflicts"] = Builtins.check_merge_conflict
+  ["newlines"] = Builtins.newlines
+  ["trailing-whitespace"] = Builtins.trailing_whitespace
+  ["buildifier-format"] = Builtins.buildifier_format
+  ["buildifier-lint"] = (Builtins.buildifier_lint) { depends = "buildifier-format" }
+  ["gofmt"] = gofmt.step
+  ["actionlint"] = Builtins.actionlint
+}
