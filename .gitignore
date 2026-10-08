@@ -1,5 +1,5 @@
-/bazel-*
-/node_modules/
+bazel-*
+node_modules/
 /.local/
 /.cache/
 /.plans/

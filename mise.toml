@@ -10,3 +10,9 @@ actionlint = "1.7.12"
 shellcheck = "0.11.0"
 [tasks.bootstrap]
 run = "git rev-parse --show-toplevel"
+
+[tasks.docs]
+run = "nu scripts/docs.nu"
+
+[tasks.check-docs]
+run = "nu scripts/docs.nu --check"

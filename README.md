@@ -10,13 +10,12 @@ RunWithGrace lets the caller choose the cancellation grace period.
 
 ## Setup
 
-Add a pinned revision to your Go module:
+Add the release to your Go module:
 
 ```sh
-go get github.com/latticebuild/graceproc@FULL_COMMIT_SHA
+go get github.com/latticebuild/graceproc@v0.1.0
 ```
 
-Replace FULL_COMMIT_SHA with the full hash of your chosen revision.
 Bazel consumers use the latticebuild_graceproc module and the public
 `@latticebuild_graceproc//:graceproc` library; see [MODULE.bazel](MODULE.bazel)
 for toolchain and dependency versions.
@@ -69,6 +68,10 @@ remain errors even if the child exits successfully.
 
 </details>
 
+## Documentation and examples
+
+See the [generated API reference](docs/README.md) and [runnable examples](examples/README.md).
+
 ## Development
 
 Install [Mise](https://mise.jdx.dev/), then prepare this checkout:
@@ -92,3 +95,8 @@ constraints, and [ARCHITECTURE.md](ARCHITECTURE.md) for implementation decisions
 ## License
 
 [Apache License 2.0](LICENSE).
+
+[Sponsor us](https://github.com/mathematic-inc) · [Discuss questions and ideas](https://github.com/latticebuild/graceproc/discussions)
+
+Pull requests are limited to repository collaborators. Use Discussions for bugs,
+feature requests and support. Changes merge as squash commits.

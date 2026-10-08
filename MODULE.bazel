@@ -1,6 +1,7 @@
 module(
     name = "latticebuild_graceproc",
-    version = "0.0.0",
+    version = "0.1.0",
+    bazel_compatibility = [">=9.2.0"],
 )
 
 bazel_dep(name = "platforms", version = "1.1.0")

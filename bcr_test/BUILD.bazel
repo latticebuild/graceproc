@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "test",
+    srcs = ["api_test.go"],
+    deps = ["@subject//:graceproc"],
+)
+
+filegroup(
+    name = "artifacts",
+    testonly = True,
+    srcs = [":test"],
+)

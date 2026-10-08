@@ -1,0 +1,13 @@
+module(name = "latticebuild_graceproc_consumer")
+
+bazel_dep(name = "latticebuild_graceproc", version = "0.1.0", repo_name = "subject")
+local_path_override(
+    module_name = "latticebuild_graceproc",
+    path = "..",
+)
+
+bazel_dep(name = "rules_go", version = "0.63.0", repo_name = "io_bazel_rules_go")
+bazel_dep(name = "gazelle", version = "0.51.3")
+
+go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.download(version = "1.27.1")
