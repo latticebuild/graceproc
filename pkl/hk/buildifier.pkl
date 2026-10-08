@@ -11,9 +11,11 @@ format: hk.Step = (Builtins.buildifier_format) {
   tests = new Mapping<String, hk.StepTest> {
     ["check bad file"] { write { ["BUILD.bazel"] = unformatted }
       tmpdir = true
-      expect { code = 4 } }
+      expect { code = 4
+      files { ["BUILD.bazel"] = unformatted } } }
     ["check good file"] { write { ["BUILD.bazel"] = formatted }
-      tmpdir = true }
+      tmpdir = true
+      expect { files { ["BUILD.bazel"] = formatted } } }
     ["fix bad file"] {
       write { ["BUILD.bazel"] = unformatted }
       run = "fix"
@@ -33,9 +35,11 @@ lint: hk.Step = (Builtins.buildifier_lint) {
   tests = new Mapping<String, hk.StepTest> {
     ["check bad file"] { write { ["BUILD.bazel"] = missingLoad }
       tmpdir = true
-      expect { code = 4 } }
+      expect { code = 4
+      files { ["BUILD.bazel"] = missingLoad } } }
     ["check good file"] { write { ["BUILD.bazel"] = formatted }
-      tmpdir = true }
+      tmpdir = true
+      expect { files { ["BUILD.bazel"] = formatted } } }
     ["fix bad file"] {
       write { ["BUILD.bazel"] = missingLoad }
       run = "fix"
