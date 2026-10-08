@@ -28,6 +28,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Select Bazel output root
+        run: |
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            printf 'BAZEL_OUTPUT_USER_ROOT=D:/b\n' >> "$GITHUB_ENV"
+          else
+            printf 'BAZEL_OUTPUT_USER_ROOT=%s/bazel\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
+          fi
       - name: Select Windows scratch directory
         if: runner.os == 'Windows'
         shell: pwsh
@@ -48,9 +55,9 @@ jobs:
       - name: Check files
         run: hk check --all --slow
       - name: Build artifacts
-        run: bazel build //:artifacts
+        run: bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" build //:artifacts
       - name: Test
-        run: bazel test //:test --test_env=TMP --test_env=TEMP
+        run: bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" test //:test --test_env=TMP --test_env=TEMP
       - name: Select optional gates
         id: gates
         shell: nu --no-config-file {0}
@@ -59,4 +66,4 @@ jobs:
           $"race=($plan.race)" | save --append $env.GITHUB_OUTPUT
       - name: Race tests
         if: runner.os != 'Windows' && steps.gates.outputs.race == 'true'
-        run: bazel test //:race_test
+        run: bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" test //:race_test
