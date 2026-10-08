@@ -33,6 +33,10 @@ jobs:
           version: 2026.10.3
       - name: Prepare dependencies
         run: mise run bootstrap
+      - name: Validate checks
+        run: hk validate
+      - name: Test checks
+        run: hk test
       - name: Check files
         run: hk check --all --slow
       - name: Build artifacts

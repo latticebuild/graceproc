@@ -1,0 +1,79 @@
+# graceproc
+
+Go process supervision with graceful cancellation and descendant cleanup on
+Linux, macOS and Windows. Run accepts an os/exec.Cmd and a signal channel;
+RunWithGrace lets the caller choose the cancellation grace period.
+
+## Setup
+
+Add a pinned revision to your Go module:
+
+```sh
+go get github.com/latticebuild/graceproc@FULL_COMMIT_SHA
+```
+
+Replace FULL_COMMIT_SHA with the full hash of your chosen revision.
+Bazel consumers use the latticebuild_graceproc module and the public
+`@latticebuild_graceproc//:graceproc` library; see [MODULE.bazel](MODULE.bazel)
+for toolchain and dependency versions.
+
+## Usage
+
+```go
+package main
+
+import (
+    "fmt"
+    "os"
+    "os/exec"
+    "os/signal"
+
+    "github.com/latticebuild/graceproc"
+)
+
+func main() {
+    signals := make(chan os.Signal, 2)
+    signal.Notify(signals, graceproc.Signals()...)
+    cmd := exec.Command("node", "server.mjs")
+    cmd.Stdin, cmd.Stdout, cmd.Stderr = os.Stdin, os.Stdout, os.Stderr
+    code, err := graceproc.Run(cmd, signals)
+    signal.Stop(signals)
+    if err != nil {
+        fmt.Fprintln(os.Stderr, err)
+        if code == 0 {
+            code = 1
+        }
+    }
+    os.Exit(code)
+}
+```
+
+Supervision returns after bounded cleanup, including when the parent exits
+normally. Unix ownership is a process group; descendants that create another
+group or session need cleanup by the tool that created them. Windows ownership
+is a Job Object assigned before the child starts running. Cleanup failures
+remain errors even if the child exits successfully.
+
+## Development
+
+Install [Mise](https://mise.jdx.dev/), then prepare this checkout:
+
+```sh
+mise trust
+mise run bootstrap
+hk validate
+hk test
+hk check --all --slow
+bazel build //:artifacts
+bazel test //:test
+```
+
+Tools and dependency versions are pinned in [mise.toml](mise.toml) and
+[MODULE.bazel](MODULE.bazel). CI runs these gates on native Linux, macOS and
+Windows runners. Repositories with a race suite also run it on Linux and macOS.
+See [docs/development.md](docs/development.md) for owning checks and platform
+constraints, and [ARCHITECTURE.md](ARCHITECTURE.md) for implementation decisions.
+
+## License
+
+[Apache License 2.0](LICENSE).
