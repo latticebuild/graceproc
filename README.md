@@ -1,5 +1,9 @@
 # graceproc
 
+[![CI](https://github.com/latticebuild/graceproc/actions/workflows/ci.yml/badge.svg)](https://github.com/latticebuild/graceproc/actions/workflows/ci.yml)
+[![Bazel](https://img.shields.io/badge/Bazel-9.2.0-43A047?logo=bazel&logoColor=white)](MODULE.bazel)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 Go process supervision with graceful cancellation and descendant cleanup on
 Linux, macOS and Windows. Run accepts an os/exec.Cmd and a signal channel;
 RunWithGrace lets the caller choose the cancellation grace period.
@@ -53,6 +57,17 @@ normally. Unix ownership is a process group; descendants that create another
 group or session need cleanup by the tool that created them. Windows ownership
 is a Job Object assigned before the child starts running. Cleanup failures
 remain errors even if the child exits successfully.
+
+<details>
+<summary>Repository map</summary>
+
+| Area | Location |
+| --- | --- |
+| Public package | [graceproc.go](graceproc.go) |
+| Process tests | [graceproc_test.go](graceproc_test.go) |
+| Development guide | [docs/development.md](docs/development.md) |
+
+</details>
 
 ## Development
 
