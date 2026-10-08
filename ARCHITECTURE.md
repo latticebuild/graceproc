@@ -4,6 +4,9 @@
 build tools and CI helpers. It accepts an `os/exec.Cmd` and a signal channel, so
 it has no Bazel, compiler, package-manager, or application dependency. Its
 separate [Go module](go.mod) lets build toolkits share that boundary.
+Consumers resolve tagged Go releases, including Bazel callers through Gazelle
+go_deps. The root MODULE supports this repository's development; the
+[external example](examples/bazel/) owns its separate Go manifest and checksums.
 
 Ordinary command execution does not own a child's descendants. A worker may
 retain a listening port after its parent exits, making the next server start

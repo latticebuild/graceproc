@@ -8,12 +8,13 @@ bazel build //:artifacts
 bazel test //:test
 # Linux and macOS:
 bazel test //:race_test
+cd examples/bazel && bazel build //:artifacts && bazel test //:test
 ```
 
 CI runs the same checks on Ubuntu 24.04, macOS 27, and Windows 2025 workers. Go race
 variants retain their Windows incompatibility. Dependencies belong to the owned
-lockfiles and MODULE configuration. Root consumers must declare source overrides
-for Latticebuild modules until they are registered in BCR.
+lockfiles and MODULE configuration. The external example resolves Graceproc's
+public Go release through go_deps; its Go API has the same version for every build system.
 
 On Windows, CI creates LOCALAPPDATA/Temp/latticebuild before Mise installs
 tools. This uses a canonical long path on the installation drive and forwards

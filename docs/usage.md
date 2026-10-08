@@ -25,28 +25,32 @@ ports after supervision.
 
 ## Bazel
 
-Declare the module and the Go rules in a caller-owned MODULE.bazel:
+Add `github.com/latticebuild/graceproc v0.1.0` to your caller-owned go.mod.
+Then import its checksum-pinned Go dependency with
+[Gazelle go_deps](https://github.com/bazel-contrib/bazel-gazelle/blob/master/extensions.md#go_deps)
+in MODULE.bazel:
 
 ```starlark
-bazel_dep(name = "latticebuild_graceproc", version = "0.1.0", repo_name = "processes")
 bazel_dep(name = "rules_go", version = "0.63.0", repo_name = "io_bazel_rules_go")
+bazel_dep(name = "gazelle", version = "0.51.3")
 go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.27.1")
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+use_repo(go_deps, "com_github_latticebuild_graceproc")
 ```
 
-Before registry registration, add a root `git_override` for your chosen full
-commit. The Go import stays `github.com/latticebuild/graceproc` when the Bazel
-repository is renamed:
+Run `go mod tidy` to update go.mod and go.sum. Use the imported library in BUILD.bazel:
 
 ```starlark
 load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 go_binary(
     name = "supervise",
     srcs = ["main.go"],
-    deps = ["@processes//:graceproc"],
+    deps = ["@com_github_latticebuild_graceproc//:graceproc"],
 )
 ```
 
-The [separate registry consumer](../bcr_test/) builds and executes exported API
-examples under an aliased repository. The [generated Go reference](api.md) lists
+The [external Go-module caller](../examples/bazel/) builds and executes all four
+exported API examples using the public Go release. The [generated Go reference](api.md) lists
 the complete API; [runnable examples](../examples/README.md) give the owning gates.

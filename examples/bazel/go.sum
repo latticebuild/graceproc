@@ -1,0 +1,4 @@
+github.com/latticebuild/graceproc v0.1.0 h1:K2eyHPnYDsHBjGGHAAhC0dZznbDogi9F2Smsj98XSM4=
+github.com/latticebuild/graceproc v0.1.0/go.mod h1:oNPHwaH0XEBTBqecJmq8tEVP00dHWkVQFN0GT1mvRfg=
+golang.org/x/sys v0.48.0 h1:bbX/i/6MgT9BVLM9RT1thmxL04yeTAhbEz4SyadbXoo=
+golang.org/x/sys v0.48.0/go.mod h1:hNLxWAXmnKAxqDtdwIYC4bM9oQPEecfsnNMuSxOs3og=

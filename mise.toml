@@ -9,7 +9,7 @@ nu = "0.115.1"
 actionlint = "1.7.12"
 shellcheck = "0.11.0"
 [tasks.bootstrap]
-run = "git rev-parse --show-toplevel"
+run = ["go mod download", "go -C examples/bazel mod download"]
 
 [tasks.docs]
 run = "nu scripts/docs.nu"

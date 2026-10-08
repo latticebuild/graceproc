@@ -58,6 +58,11 @@ jobs:
         run: bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" build //:artifacts
       - name: Test
         run: bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" test //:test --test_env=TMP --test_env=TEMP
+      - name: Verify Go-module Bazel example
+        working-directory: examples/bazel
+        run: |
+          bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" build //:artifacts
+          bazel --output_user_root="$BAZEL_OUTPUT_USER_ROOT" test //:test --test_env=TMP --test_env=TEMP
       - name: Select optional gates
         id: gates
         shell: nu --no-config-file {0}

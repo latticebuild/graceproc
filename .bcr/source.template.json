@@ -1,5 +1,0 @@
-{
-  "url": "https://github.com/latticebuild/graceproc/releases/download/{TAG}/graceproc-{VERSION}.tar.gz",
-  "integrity": "{INTEGRITY}",
-  "strip_prefix": "graceproc-{VERSION}"
-}

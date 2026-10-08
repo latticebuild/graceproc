@@ -16,9 +16,9 @@ Add the release to your Go module:
 go get github.com/latticebuild/graceproc@v0.1.0
 ```
 
-Bazel consumers use the latticebuild_graceproc module and the public
-`@latticebuild_graceproc//:graceproc` library; see [MODULE.bazel](MODULE.bazel)
-for toolchain and dependency versions.
+Bazel consumers import the same Go release through Gazelle's `go_deps` extension
+and depend on `@com_github_latticebuild_graceproc//:graceproc`. See the
+[Bazel setup](docs/usage.md#bazel) and [external caller](examples/bazel/).
 
 ## Usage
 
