@@ -32,7 +32,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          [IO.File]::AppendAllText($env:GITHUB_ENV, "TMP=$env:RUNNER_TEMP`nTEMP=$env:RUNNER_TEMP`n")
+          $scratch = [IO.Directory]::CreateDirectory((Join-Path $env:LOCALAPPDATA 'Temp/latticebuild')).FullName
+          [IO.File]::AppendAllText($env:GITHUB_ENV, "TMP=$scratch`nTEMP=$scratch`n")
       - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
         with:
           version: 2026.10.3

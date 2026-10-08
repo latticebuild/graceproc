@@ -16,6 +16,6 @@ lockfiles and MODULE configuration. Root consumers must declare source overrides
 for Latticebuild modules until they are registered in BCR.
 
 On Windows, use a temporary root with its canonical long path. Vite rejects 8.3
-aliases in served paths. CI selects RUNNER_TEMP before dependency preparation and
+aliases in served paths. CI selects LOCALAPPDATA/Temp/latticebuild before dependency preparation and
 forwards TMP/TEMP through Bazel tests; private runtime trees remain inside that
 root. Keep this path out of installed source and dependency directories.
